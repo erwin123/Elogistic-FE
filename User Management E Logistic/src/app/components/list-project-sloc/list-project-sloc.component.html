@@ -1,0 +1,76 @@
+<h1>Storage Location</h1>
+<hr />
+<br />
+<div class="clr-row clr-justify-content-end">
+  <button type="button" class="btn btn-icon" (click)="getStorageLocation()">
+    <clr-icon shape="refresh"></clr-icon>
+  </button>
+</div>
+<clr-datagrid style="margin-bottom: 25px;">
+  <clr-dg-column>No.</clr-dg-column>
+  <clr-dg-column [clrDgField]="'plant_code'" clrDgSortOrder="ascSort"
+    >Plant Code</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'project_name'" clrDgSortOrder="ascSort"
+    >Project Name</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'storage_location_code'" clrDgSortOrder="ascSort"
+    >Storage Location Code</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'storage_location_desc'" clrDgSortOrder="ascSort"
+    >Storage Location Name</clr-dg-column
+  >
+  <!-- <clr-dg-column [clrDgField]="'is_active'" clrDgSortOrder="ascSort"
+    >Status</clr-dg-column
+  > -->
+  <clr-dg-column>Action</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let data of listStorageLocation; index as i">
+    <clr-dg-cell>{{ i + 1 }}</clr-dg-cell>
+    <clr-dg-cell>{{ data.plant_code }}</clr-dg-cell>
+    <clr-dg-cell>{{ data.project_name }}</clr-dg-cell>
+    <clr-dg-cell>{{ data.storage_location_code }}</clr-dg-cell>
+    <clr-dg-cell>{{ data.storage_location_desc }}</clr-dg-cell>
+    <!-- <clr-dg-cell>
+      <span *ngIf="data.is_active == 1">Active</span>
+      <span *ngIf="data.is_active == 0">Non-Active</span>
+    </clr-dg-cell> -->
+    <clr-dg-cell>
+      <div class="btn-group btn-icon">
+        <!-- <button
+          *ngIf="data.is_active == 1"
+          class="btn btn-primary"
+          (click)="activeDeactiveJob(data)"
+        >
+          <clr-icon shape="times-circle"></clr-icon>
+        </button>
+        <button
+          *ngIf="data.is_active == 0"
+          class="btn btn-success"
+          (click)="activeDeactiveJob(data)"
+        >
+          <clr-icon shape="check"></clr-icon>
+        </button>
+        <button class="btn btn-danger" (click)="deleteJob(data)">
+          <clr-icon shape="trash"></clr-icon>
+        </button>
+        <button type="button" class="btn" (click)="modalEditJob(data)">
+          <clr-icon shape="note"></clr-icon>
+        </button> -->
+        <button type="button" class="btn" (click)="showUser()">
+          <clr-icon shape="users"></clr-icon>
+        </button>
+      </div>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgPageSize]="10">
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]"
+        >Data per page</clr-dg-page-size
+      >
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+      {{ pagination.totalItems }} data
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>

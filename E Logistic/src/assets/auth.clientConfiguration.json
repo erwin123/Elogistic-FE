@@ -1,0 +1,17 @@
+{
+  "stsServer": "https://sso-beta.acset.co/account/login",
+  "redirect_url": "http://localhost:4200/landing",
+  "client_id": "asgard",
+  "response_type": "code",
+  "scope": "dataEventRecords securedFiles openid profile",
+  "post_logout_redirect_uri": "http://localhost:4200/landing",
+  "start_checksession": true,
+  "silent_renew": true,
+  "silent_renew_url": "http://localhost:4200/landing",
+  "post_login_route": "/landing",
+  "forbidden_route": "/not-found",
+  "unauthorized_route": "/login",
+  "log_console_warning_active": true,
+  "log_console_debug_active": true,
+  "max_id_token_iat_offset_allowed_in_seconds": 10
+}

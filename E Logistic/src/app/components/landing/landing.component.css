@@ -1,0 +1,72 @@
+.example-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.example-is-mobile .example-toolbar {
+  position: fixed;
+  z-index: 2;
+}
+
+h1.example-app-name {
+  margin-left: 8px;
+}
+
+.example-sidenav-container {
+  flex: 1;
+}
+
+.example-is-mobile .example-sidenav-container {
+  flex: 1 0 auto;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+svg:not(:root).svg-inline--fa {
+  margin-right: 0.7em;
+}
+.drawerContentMenu {
+  height: calc(100vh - 64px);
+}
+
+.menuDesktop {
+  display: none;
+  height: 0px;
+}
+
+.drawerContainerMobile {
+  height: calc(100vh - 114px);
+}
+
+.menuDown {
+  border-top: 1px #1d13aa solid;
+  background: #fff;
+}
+
+.menuDown button {
+  background: none;
+  border: none;
+  white-space: normal;
+  color: #163999;
+  outline: none;
+  background-position: center;
+  transition: background 0.8s;
+}
+
+.menuDown button:active {
+  background-color: #cacaca;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+.side-button {
+  color: #213071 !important;
+  font-weight: bold;
+}

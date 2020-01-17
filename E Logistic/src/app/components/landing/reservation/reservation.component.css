@@ -1,0 +1,33 @@
+.container-comparison {
+  width: 50%;
+}
+
+@media only screen and (max-width: 600px) {
+  .container-comparison {
+    width: 100%;
+  }
+}
+
+.y-fill-i1p {
+  color: #213071;
+}
+
+.text-red {
+  color: red;
+}
+
+.text-green {
+  color: green;
+}
+
+.text-black {
+  color: black;
+}
+
+.text-yellow {
+  color: yellow;
+}
+
+.display-hidden {
+  display: none;
+}

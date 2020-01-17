@@ -1,0 +1,65 @@
+<div class="login">
+  <div class="login-container">
+    <ly-grid container spacing="16 8@XSmall" style="text-align: center">
+      <ly-grid item col="6 12@XSmall">
+        <div>
+          <img
+            class="logo"
+            src="assets/images/logo-white.png"
+            alt="Acset Logo"
+          />
+        </div>
+      </ly-grid>
+      <ly-grid item col="6 12@XSmall">
+        <div>
+          <span style="font-style:italic;color:rgb(85, 85, 85);"
+            >E-Logistic</span
+          >
+        </div>
+      </ly-grid>
+    </ly-grid>
+    <form (ngSubmit)="login()" ngNativeValidate>
+      <ly-field style="width: 100%;">
+        <ly-label>Username</ly-label>
+        <input
+          autofocus
+          name="username"
+          type="text"
+          lyNativeControl
+          [(ngModel)]="user.Username"
+          required
+        />
+      </ly-field>
+      <ly-field style="width: 100%;">
+        <ly-label>Password</ly-label>
+        <input
+          name="password"
+          [type]="hide ? 'password' : 'text'"
+          lyNativeControl
+          [(ngModel)]="user.Password"
+          required
+        />
+        <button
+          ly-button
+          appearance="icon"
+          lySuffix
+          (click)="hide = !hide"
+          type="button"
+        >
+          <ly-icon>{{ hide ? "visibility" : "visibility_off" }}</ly-icon>
+        </button>
+      </ly-field>
+      <p align="center" class="error-message">{{ errorMessage }}</p>
+      <button
+        type="submit"
+        ly-button
+        raised
+        bg="primary"
+        style="width: 100%; margin-top:10px;border-radius: 20px;"
+      >
+        Login
+      </button>
+      <a href="javascript://" routerLink="../reset-password"><p align="center">Forgot password?</p></a>
+    </form>
+  </div>
+</div>

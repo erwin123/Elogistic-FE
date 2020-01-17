@@ -1,0 +1,84 @@
+<ly-grid container spacing="16 8@XSmall"
+  ><ly-grid item col="12 12@XSmall">
+    <p class="menu-title">
+      Recieve Order
+    </p>
+  </ly-grid>
+</ly-grid>
+<ly-grid container spacing="16 8@XSmall">
+  <ly-grid item col="12">
+    <div [className]="classes.actions" class="full-width">
+      <span [className]="classes.flex"></span>
+      <!-- Hidden input -->
+      <input
+        #_fileInput
+        type="file"
+        (change)="cropping.selectInputEvent($event)"
+        accept="image/*"
+        hidden
+      />
+    </div>
+
+    <div *ngIf="cropping.isLoaded" style="text-align: center">
+      <button (click)="cropping.clean(); croppedImage = ''" ly-button>
+        <i class="fas fa-times"></i>
+      </button>
+      <br />
+      <button (click)="cropping.zoomIn()" ly-button appearance="icon">
+        <ly-icon>zoom_in</ly-icon>
+      </button>
+      <button (click)="cropping.zoomOut()" ly-button appearance="icon">
+        <ly-icon>zoom_out</ly-icon>
+      </button>
+      <button (click)="cropping.rotate(-90)" ly-button appearance="icon">
+        <ly-icon>rotate_90_degrees_ccw</ly-icon>
+      </button>
+    </div>
+
+    <ly-img-cropper
+      [withClass]="classes.cropping"
+      #cropping
+      [config]="myConfig"
+      [(scale)]="scale"
+      (cropped)="onCropped($event)"
+      (loaded)="onloaded($event)"
+      (error)="onerror($event)"
+      style="left: 0;
+      right: 0;
+      margin: auto;"
+    >
+      <span
+        ><button
+          type="button"
+          ly-button
+          appearance="miniFab"
+          raised
+          bg="primary"
+        >
+          <i class="fas fa-camera"></i></button
+      ></span>
+    </ly-img-cropper>
+  </ly-grid>
+  <ly-grid item col="12">
+    <button
+      ly-button
+      raised
+      bg="primary"
+      style="float: left;margin:0 auto;margin-right: 10px;"
+      class="full-width-button"
+      (click)="onSubmit()"
+    >
+      Submit
+    </button>
+    &nbsp;
+    <button
+      ly-button
+      raised
+      style="float: left;margin:0 auto;"
+      class="full-width-button"
+      (click)="cancelRecieve()"
+    >
+      Cancel
+    </button>
+  </ly-grid>
+</ly-grid>

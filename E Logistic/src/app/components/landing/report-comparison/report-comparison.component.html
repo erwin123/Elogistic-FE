@@ -1,0 +1,59 @@
+<ly-grid container spacing="16 8@XSmall"
+  ><ly-grid item col="12 12@XSmall">
+    <p class="menu-title">
+      Report Comparison
+    </p>
+  </ly-grid>
+</ly-grid>
+<div class="container-comparison" style="margin-bottom: 20px;">
+  <ly-grid container spacing="16 8@XSmall" class="border-content">
+    <ly-grid item col="12"
+      ><h3>Search</h3>
+      <hr />
+    </ly-grid>
+    <ly-grid item col="12">
+      <ly-field class="full-width">
+        <input lyNativeControl placeholder="No FNPB" /> </ly-field
+    ></ly-grid>
+    <ly-grid item col="12">
+      <ly-field class="full-width">
+        <input lyNativeControl placeholder="Project" /> </ly-field
+    ></ly-grid>
+    <ly-grid item col="12">
+      <ly-field class="full-width">
+        <input lyNativeControl placeholder="Area" /> </ly-field
+    ></ly-grid>
+    <ly-grid item col="12">
+      <ly-field class="full-width">
+        <input lyNativeControl placeholder="Supervisor" /> </ly-field
+    ></ly-grid>
+    <ly-grid item col="6 12@XSmall"
+      ><ly-field class="full-width">
+        <input
+          [owlDateTime]="dt1"
+          [owlDateTimeTrigger]="dt1"
+          placeholder="Date Time"
+        />
+        <owl-date-time #dt1></owl-date-time>
+      </ly-field>
+    </ly-grid>
+    <ly-grid item col="6 12@XSmall">
+      <ly-field class="full-width">
+        <input [owlDateTime]="dt2" placeholder="Date Time" />
+        <span [owlDateTimeTrigger]="dt2"><i class="fa fa-calendar"></i></span>
+        <owl-date-time #dt2></owl-date-time>
+      </ly-field>
+    </ly-grid>
+    <ly-grid item col="12"
+      ><button
+        ly-button
+        raised
+        bg="primary"
+        style="float: right"
+        class="full-width-button"
+      >
+        Download
+      </button>
+    </ly-grid>
+  </ly-grid>
+</div>

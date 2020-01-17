@@ -1,0 +1,299 @@
+<h1>User</h1>
+<hr />
+<app-add-user></app-add-user>
+<br />
+<div class="clr-row clr-justify-content-end">
+  <button type="button" class="btn btn-icon" (click)="getUser()">
+    <clr-icon shape="refresh"></clr-icon>
+  </button>
+</div>
+<clr-datagrid style="margin-bottom: 25px;">
+  <clr-dg-column>No.</clr-dg-column>
+  <clr-dg-column [clrDgField]="'username'" clrDgSortOrder="ascSort"
+    >Username</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'full_name'" clrDgSortOrder="ascSort"
+    >Full Name</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'gender'" clrDgSortOrder="ascSort"
+    >Gender</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'no_handphone'" clrDgSortOrder="ascSort"
+    >Phone Number</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'email'" clrDgSortOrder="ascSort"
+    >E-mail</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'is_active'" clrDgSortOrder="ascSort"
+    >Status</clr-dg-column
+  >
+  <clr-dg-column>Action</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let data of listUser; index as i">
+    <clr-dg-cell>{{ i + 1 }}</clr-dg-cell>
+    <clr-dg-cell>{{ data.username }}</clr-dg-cell>
+    <clr-dg-cell>{{ data.full_name }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span *ngIf="data.gender == 'L'">Male</span>
+      <span *ngIf="data.gender == 'P'">Female</span>
+    </clr-dg-cell>
+    <clr-dg-cell>{{ data.no_handphone }}</clr-dg-cell>
+    <clr-dg-cell>{{ data.email }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span *ngIf="data.is_active == 1">Active</span>
+      <span *ngIf="data.is_active == 0">Non-Active</span>
+    </clr-dg-cell>
+    <clr-dg-cell>
+      <div class="btn-group btn-icon">
+        <button
+          *ngIf="data.is_active == 1"
+          class="btn btn-primary"
+          (click)="activeDeactiveUser(data)"
+        >
+          <clr-icon shape="times-circle"></clr-icon>
+        </button>
+        <button
+          *ngIf="data.is_active == 0"
+          class="btn btn-success"
+          (click)="activeDeactiveUser(data)"
+        >
+          <clr-icon shape="check"></clr-icon>
+        </button>
+        <button class="btn btn-danger" (click)="deleteUser(data)">
+          <clr-icon shape="trash"></clr-icon>
+        </button>
+        <button type="button" class="btn" (click)="modalEditUser(data)">
+          <clr-icon shape="note"></clr-icon>
+        </button>
+        <button
+          class="btn btn-icon btn-success"
+          (click)="modalChangePassword(data)"
+        >
+          <clr-icon shape="key"></clr-icon>
+        </button>
+        <button
+          class="btn btn-icon btn-warning"
+          (click)="modalLoginUserApp(data)"
+        >
+          <clr-icon shape="logout"></clr-icon>
+        </button>
+        <button class="btn btn-success" (click)="showDetailUser(data)">
+          <clr-icon shape="search"></clr-icon>
+        </button>
+      </div>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgPageSize]="10">
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]"
+        >Data per page</clr-dg-page-size
+      >
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+      {{ pagination.totalItems }} data
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="showModalEditUser" *ngIf="detailUser">
+  <h3 class="modal-title">Edit User</h3>
+
+  <div class="modal-body">
+    <form clrForm ngNativeValidate (ngSubmit)="updateUser()">
+      <clr-input-container>
+        <label>Username</label>
+        <input
+          clrInput
+          type="text"
+          name="username"
+          class="full-width"
+          required
+          maxlength="25"
+          minlength="4"
+          [(ngModel)]="detailUser.username"
+          disabled
+        />
+      </clr-input-container>
+      <clr-input-container>
+        <label>Full Name</label>
+        <input
+          clrInput
+          type="text"
+          name="fullName"
+          class="full-width"
+          required
+          maxlength="30"
+          [(ngModel)]="detailUser.full_name"
+          minlength="2"
+        />
+      </clr-input-container>
+      <clr-select-container>
+        <label>Gender</label>
+        <select
+          clrSelect
+          name="options"
+          class="full-width"
+          required
+          [(ngModel)]="detailUser.gender"
+        >
+          <option value="L" selected>Male</option>
+          <option value="P">Female</option>
+        </select>
+      </clr-select-container>
+      <clr-input-container>
+        <label>E-mail</label>
+        <input
+          clrInput
+          type="email"
+          name="email"
+          class="full-width"
+          required
+          maxlength="30"
+          [(ngModel)]="detailUser.email"
+        />
+      </clr-input-container>
+      <clr-input-container>
+        <label>Phone Number</label>
+        <input
+          clrInput
+          type="tel"
+          name="phoneNumber"
+          class="full-width"
+          maxlength="15"
+          [(ngModel)]="detailUser.no_handphone"
+        />
+      </clr-input-container>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <form clrForm ngNativeValidate (ngSubmit)="updateUser()">
+      <button
+        type="button"
+        class="btn btn-outline"
+        (click)="showModalEditUser = false"
+      >
+        Cancel
+      </button>
+      <button type="submit" class="btn btn-primary">
+        Save
+      </button>
+    </form>
+  </div>
+</clr-modal>
+
+<clr-modal
+  [(clrModalOpen)]="showModalChangePassword"
+  *ngIf="dataChangePassword"
+>
+  <h3 class="modal-title">Change Password</h3>
+
+  <div class="modal-body">
+    <form clrForm ngNativeValidate (ngSubmit)="changePassword()">
+      <clr-input-container>
+        <label>Username</label>
+        <input
+          clrInput
+          type="text"
+          name="username"
+          class="full-width"
+          required
+          maxlength="25"
+          minlength="4"
+          [(ngModel)]="dataChangePassword.username"
+          disabled
+        />
+      </clr-input-container>
+      <clr-input-container>
+        <label>Password</label>
+        <input
+          clrInput
+          type="password"
+          name="password"
+          style="width:95%"
+          required
+          maxlength="25"
+          minlength="8"
+          [(ngModel)]="dataChangePassword.password"
+        />
+      </clr-input-container>
+      <clr-input-container>
+        <label>Confirmation Password</label>
+        <input
+          clrInput
+          type="password"
+          name="confirmPassword"
+          style="width:95%"
+          required
+          maxlength="25"
+          minlength="8"
+          [(ngModel)]="dataChangePassword.confirmPassword"
+        />
+      </clr-input-container>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <form clrForm ngNativeValidate (ngSubmit)="changePassword()">
+      <button
+        type="button"
+        class="btn btn-outline"
+        (click)="showModalChangePassword = false"
+      >
+        Cancel
+      </button>
+      <button type="submit" class="btn btn-primary">
+        Save
+      </button>
+    </form>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="showModalLoginApp">
+  <h3 class="modal-title">List Active Login Apps</h3>
+  <div class="modal-body">
+    <clr-datagrid style="margin-bottom: 25px;">
+      <!-- <clr-dg-column>No.</clr-dg-column> -->
+      <clr-dg-column [clrDgField]="'username'" clrDgSortOrder="ascSort"
+        >Username</clr-dg-column
+      >
+      <!-- <clr-dg-column [clrDgField]="'full_name'" clrDgSortOrder="ascSort"
+        >Full Name</clr-dg-column
+      > -->
+      <clr-dg-column [clrDgField]="'application_name'" clrDgSortOrder="ascSort"
+        >Application Name</clr-dg-column
+      >
+      <clr-dg-column [clrDgField]="'login_date'" clrDgSortOrder="ascSort"
+        >Login Date</clr-dg-column
+      >
+      <clr-dg-column>Action</clr-dg-column>
+
+      <clr-dg-row
+        *clrDgItems="let data of listLoginAppUser; index as i"
+        style="cursor: pointer;"
+      >
+        <!-- <clr-dg-cell>{{ i + 1 }}</clr-dg-cell> -->
+        <clr-dg-cell>{{ data.username }}</clr-dg-cell>
+        <!-- <clr-dg-cell>{{ data.full_name }}</clr-dg-cell> -->
+        <clr-dg-cell>{{ data.application_name }}</clr-dg-cell>
+        <clr-dg-cell>{{ data.login_date }}</clr-dg-cell>
+        <clr-dg-cell>
+          <div class="btn-group btn-icon">
+            <button class="btn btn-warning" (click)="logoutUserFromApps(data)">
+              <clr-icon shape="logout"></clr-icon>
+            </button>
+          </div>
+        </clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>
+        <clr-dg-pagination #pagination [clrDgPageSize]="10">
+          <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]"
+            >Data per page</clr-dg-page-size
+          >
+          {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+          {{ pagination.totalItems }} data
+        </clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+  </div>
+  <div class="modal-footer"></div>
+</clr-modal>

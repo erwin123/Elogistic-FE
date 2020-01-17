@@ -1,0 +1,39 @@
+<div class="login-wrapper">
+  <form class="login">
+    <section class="title">
+      <h3 class="welcome">Welcome to</h3>
+      ACSET Indonusa Tbk.
+      <h5 class="hint">Use your username to sign in</h5>
+    </section>
+    <form (ngSubmit)="login()" ngNativeValidate>
+      <div class="login-group">
+        <clr-input-container>
+          <label class="clr-sr-only">Username</label>
+          <input
+            type="text"
+            name="username"
+            clrInput
+            placeholder="Username"
+            [(ngModel)]="form.username"
+            required
+          />
+        </clr-input-container>
+        <clr-password-container>
+          <label class="clr-sr-only">Password</label>
+          <input
+            type="password"
+            name="password"
+            clrPassword
+            placeholder="Password"
+            [(ngModel)]="form.password"
+            required
+          />
+        </clr-password-container>
+        <div class="error active" *ngIf="messageError">
+          {{ messageError }}
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </div>
+    </form>
+  </form>
+</div>

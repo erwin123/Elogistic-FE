@@ -1,0 +1,45 @@
+<ly-grid container spacing="16 8@XSmall"
+  ><ly-grid item col="12 12@XSmall">
+    <p class="menu-title">
+      Delivery Order
+    </p>
+  </ly-grid>
+</ly-grid>
+
+<div style="text-align: center" *ngIf="listDeliveryOrder.length == 0">
+  <p style="color: rgb(151, 148, 148)">No data.</p>
+</div>
+
+<div class="container-comparison">
+  <ly-grid
+    *ngFor="let data of listDeliveryOrder"
+    container
+    col="12"
+    style="margin-bottom:0.5em;padding-left: 1em;padding-right: 1em;border-radius: 15px; background-color: #213071; color: white;"
+  >
+    <ly-grid item col="10 8@XSmall">
+      <p>
+        {{ data.order_no }}
+      </p>
+    </ly-grid>
+    <ly-grid item col="2 4@XSmall" style="top:0; bottom:0; margin:auto">
+      <button
+        ly-button
+        raised
+        bg="primary"
+        style="background-color: #4caf50 !important;border-radius: 15px;"
+        (click)="confirmDeliveryOrder(data)"
+      >
+        Process
+      </button>
+    </ly-grid>
+  </ly-grid>
+</div>
+<ngx-confirm-box
+  bgColor="rgba(0,0,0,0.5)"
+  confirmHeading="PROCESS"
+  confirmCanceltext="No"
+  confirmContent="Are your sure?"
+  confirmOkaytext="Yes"
+  (confirmEvt)="deliveryOrder($event)"
+></ngx-confirm-box>

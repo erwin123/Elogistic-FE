@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+.main-container .header,
+.main-container header {
+  background-color: rgb(32, 48, 114) !important;
+}
+
+.branding {
+  background-color: rgb(32, 48, 114) !important;
+}
+
+.spinner {
+  min-width: 3.5rem !important;
+  min-height: 3.5rem !important;
+  position: fixed !important;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.div-loader {
+  position: fixed;
+  background-color: grey;
+  height: 100%;
+  width: 100%;
+  opacity: 0.6;
+  top: 0;
+}
+
+.full-width {
+  width: 100%;
+}

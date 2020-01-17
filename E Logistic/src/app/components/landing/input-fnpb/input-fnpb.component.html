@@ -1,0 +1,280 @@
+<ly-grid container spacing="16 8@XSmall"
+  ><ly-grid item col="12 12@XSmall">
+    <p class="menu-title">
+      Input FNPB
+    </p>
+  </ly-grid>
+</ly-grid>
+<div class="container-comparison" style="margin-bottom: 20px;">
+  <form (ngSubmit)="confirmSubmit()">
+    <ly-grid container spacing="16 8@XSmall">
+      <ly-grid item col="6 12@XSmall">
+        <ly-field class="full-width">
+          <ly-label>Project</ly-label>
+          <ly-select
+            name="project"
+            [(ngModel)]="formFnpb.plant_code"
+            (ngModelChange)="getZoneByProject()"
+            required
+          >
+            <ly-option [value]="0">-- Select Project --</ly-option>
+            <ly-option
+              *ngFor="let data of listProject"
+              [value]="data.plant_code"
+              style="width: 100% !important;"
+              >{{ data.project_name | slice: 0:20 }}</ly-option
+            >
+          </ly-select>
+        </ly-field>
+      </ly-grid>
+      <ly-grid item col="6 12@XSmall">
+        <ly-field class="full-width">
+          <ly-label>Zone</ly-label>
+          <ly-select
+            name="zone"
+            [(ngModel)]="formFnpb.zone_id"
+            (ngModelChange)="getAreaByProjectZone()"
+            required
+          >
+            <ly-option [value]="0">-- Select Zone --</ly-option>
+            <ly-option *ngFor="let data of listZone" [value]="data.id">{{
+              data.zone_name
+            }}</ly-option>
+          </ly-select>
+        </ly-field>
+      </ly-grid>
+      <ly-grid item col="6 12@XSmall">
+        <ly-field class="full-width">
+          <ly-label>Area</ly-label>
+          <ly-select name="area" [(ngModel)]="formFnpb.area_id" required>
+            <ly-option [value]="0">-- Select Area --</ly-option>
+            <ly-option *ngFor="let data of listArea" [value]="data.id">{{
+              data.area_name
+            }}</ly-option>
+          </ly-select>
+        </ly-field></ly-grid
+      >
+      <ly-grid item col="6 12@XSmall">
+        <ly-field class="full-width">
+          <input
+            style="color: grey;"
+            lyNativeControl
+            placeholder="No Reservasi"
+            name="noReservasi"
+            value="00XXXX"
+            required
+            readonly
+            disabled
+          /> </ly-field
+      ></ly-grid>
+      <ly-grid item col="12 12@XSmall">
+        <ly-field fullWidth>
+          <ly-label>Description</ly-label>
+          <textarea
+            lyNativeControl
+            name="description"
+            [(ngModel)]="formFnpb.description"
+            required
+          ></textarea> </ly-field
+      ></ly-grid>
+      <ly-grid item col="12" style="top:0; bottom:0; margin:auto;">
+        <span style="font-size: 0.7em;color:rgb(85, 85, 85);"
+          >Last Update Stock {{ lastUpdateStock | date: "dd LLL yyyy" }}</span
+        >
+      </ly-grid>
+      <div
+        class="border-content full-width"
+        style="margin-bottom: 20px; border-radius: 5px !important; padding: 0;"
+      >
+        <ly-grid
+          container
+          col="12"
+          *ngFor="let data of listMaterial; index as i"
+        >
+          <ly-grid item col="11" style="top:0; bottom:0; margin:auto;">
+            <!-- <span
+              style="font-size: 0.7em;color:rgb(85, 85, 85);"
+              *ngIf="data.material_code"
+              >{{ data.material_desc }} tersedia stock {{ data.unrestricted }}
+              {{ data.base_unit_of_measure }}</span
+            > -->&nbsp;
+          </ly-grid>
+          <ly-grid
+            item
+            col="1"
+            style="top:0; bottom:0; margin:auto;"
+            (click)="removeMaterial(i)"
+          >
+            <i class="fas fa-times" style="cursor: pointer;"></i>
+          </ly-grid>
+          <ly-grid item col="12">
+            <ng-select
+              [items]="material"
+              bindLabel="_source.MATERIAL_DESC"
+              (keyup)="onChangeMaterialName(i, $event.srcElement.value)"
+              name="materialName{{ i }}"
+              [(ngModel)]="data.material_desc"
+              (change)="setMaterial($event._source, i)"
+              [clearable]="false"
+              placeholder="Material Name"
+              [disabled]="!formFnpb.plant_code"
+              typeToSearchText="Please enter 3 or more characters"
+            >
+              <ng-template
+                ng-option-tmp
+                let-item="item"
+                let-index="index"
+                let-search="searchTerm"
+              >
+                <p style="margin-block-start:0; margin-block-end: 0;">
+                  {{ item._source.MATERIAL_DESC }}
+                </p>
+
+                <span style="font-size: 10px;"
+                  >Location {{ item._source.STORAGE_LOCATION_DESC }}, Material
+                  Code {{ item._source.MATERIAL_CODE }}
+                </span>
+              </ng-template>
+            </ng-select>
+          </ly-grid>
+          <ly-grid item col="12">
+            <ly-field class="full-width">
+              <input
+                type="text"
+                placeholder="Material Code"
+                lyNativeControl
+                name="materialCode{{ i }}"
+                [(ngModel)]="data.material_code"
+                readonly
+              />
+            </ly-field>
+          </ly-grid>
+          <ly-grid item col="10">
+            <ly-field class="full-width">
+              <input
+                id="qtystock{{ i }}"
+                type="number"
+                placeholder="Qty"
+                lyNativeControl
+                name="quantity{{ i }}"
+                [(ngModel)]="data.quantity"
+                [disabled]="!formFnpb.plant_code || formFnpb.plant_code == '0'"
+              />
+              <ly-hint>
+                <span>Qty Available : {{ data.unrestricted }}</span
+                ><br />
+                <span
+                  style="color:#213071;"
+                  *ngIf="quantityMaterialHasNotBeenSent != 0"
+                >
+                  {{ quantityMaterialHasNotBeenSent }}
+                  {{ data.base_unit_of_measure }}
+                  {{ data.material_desc }} have not been sent from the
+                  logistics.
+                </span>
+              </ly-hint>
+            </ly-field>
+          </ly-grid>
+          <ly-grid item col="2" style="top:0; bottom:0; margin:auto;">
+            <label>{{
+              data.base_unit_of_measure ? data.base_unit_of_measure : "-"
+            }}</label>
+          </ly-grid>
+          <ly-grid item col="12">
+            <ly-field class="full-width">
+              <input
+                type="text"
+                placeholder="Storage Location"
+                lyNativeControl
+                name="storageLocation{{ i }}"
+                [(ngModel)]="data.storage_location_desc"
+                readonly
+              />
+            </ly-field>
+          </ly-grid>
+          <!-- <ly-grid
+            item
+            col="12"
+            style="top:0; bottom:0; margin:auto;"
+            *ngIf="data.material_code && data.material_desc != 'SOLAR'"
+          >
+            <ly-field class="full-width">
+              <input
+                type="text"
+                placeholder="Description"
+                lyNativeControl
+                name="description{{ i }}"
+                [(ngModel)]="data.description"
+              />
+            </ly-field>
+          </ly-grid> -->
+          <ly-grid
+            item
+            col="6"
+            style="top:0; bottom:0; margin:auto;"
+            *ngIf="data.material_code && data.material_desc == 'SOLAR'"
+          >
+            <ly-field class="full-width">
+              <input
+                type="text"
+                placeholder="No. Registrasi"
+                lyNativeControl
+                name="description{{ i }}"
+                [(ngModel)]="data.description"
+              />
+            </ly-field>
+          </ly-grid>
+          <ly-grid
+            item
+            col="6"
+            style="top:0; bottom:0; margin:auto;"
+            *ngIf="data.material_code && data.material_desc == 'SOLAR'"
+          >
+            <ly-field class="full-width">
+              <input
+                type="number"
+                placeholder="Last Hour Meter"
+                lyNativeControl
+                name="lastHourMeter{{ i }}"
+                [(ngModel)]="data.lastHourMeter"
+              />
+            </ly-field>
+          </ly-grid>
+        </ly-grid>
+        <ly-grid item col="12" style="top:0; bottom:0; margin:auto;">
+          <div style="text-align: center;">
+            <button
+              type="button"
+              ly-button
+              appearance="miniFab"
+              raised
+              bg="primary"
+              (click)="addMaterial()"
+            >
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+        </ly-grid>
+      </div>
+      <ly-grid item col="12 12@XSmall">
+        <button
+          ly-button
+          raised
+          bg="primary"
+          style="float: right"
+          class="full-width-button"
+        >
+          Order
+        </button>
+      </ly-grid>
+    </ly-grid>
+  </form>
+</div>
+<ngx-confirm-box
+  bgColor="rgba(0,0,0,0.5)"
+  confirmHeading="SAVE"
+  confirmCanceltext="No"
+  confirmContent="Are your sure?"
+  confirmOkaytext="Yes"
+  (confirmEvt)="inputFnpb($event)"
+></ngx-confirm-box>

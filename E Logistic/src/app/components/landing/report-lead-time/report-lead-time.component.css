@@ -1,0 +1,17 @@
+.i1o {
+  padding: 0 !important;
+}
+
+.container-comparison {
+  width: 50%;
+}
+
+@media only screen and (max-width: 600px) {
+  .container-comparison {
+    width: 100%;
+  }
+}
+
+.y-fill-i1p {
+  color: #213071;
+}

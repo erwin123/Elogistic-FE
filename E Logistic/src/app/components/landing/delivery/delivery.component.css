@@ -1,0 +1,3 @@
+::ng-deep [class^="y-tabs-indicator"] {
+  color: yellow !important;
+}

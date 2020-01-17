@@ -1,0 +1,4 @@
+::ng-deep .legend-items {
+  padding-top: 10px;
+  overflow-x: auto;
+}

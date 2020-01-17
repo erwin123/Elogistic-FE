@@ -1,0 +1,6 @@
+{
+  "api_login_url": "https://stg-api-um-elogistic.acset.co/",
+  "api_url": "https://stg-api-um-elogistic.acset.co/",
+  "api_elogistic": "https://stg-api-elogistic.acset.co/",
+  "application_id": 1
+}

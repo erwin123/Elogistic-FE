@@ -1,0 +1,54 @@
+<clr-main-container>
+  <clr-header>
+    <div class="branding">
+      <img
+        src="../../../assets/images/logo.png"
+        style="width: 100px; height: 50px; padding-top:15px;"
+      />
+    </div>
+    <div class="header-actions">
+      <clr-dropdown>
+        <button
+          class="nav-text"
+          clrDropdownTrigger
+          aria-label="open user profile"
+        >
+          {{ userLogin.username }}
+          <clr-icon shape="caret down"></clr-icon>
+        </button>
+        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+          <a href="javascript://" (click)="logout()" clrDropdownItem>
+            Log Out
+          </a>
+        </clr-dropdown-menu>
+      </clr-dropdown>
+    </div>
+    <div class="header-nav" [clr-nav-level]="1"></div>
+  </clr-header>
+  <div class="content-container">
+    <clr-vertical-nav
+      [clrVerticalNavCollapsible]="isCollaps"
+      [clr-nav-level]="1"
+    >
+      <a clrVerticalNavLink routerLinkActive="active" routerLink="./home">
+        <clr-icon shape="home" clrVerticalNavIcon></clr-icon>
+        Home
+      </a>
+      <a
+        clrVerticalNavLink
+        routerLinkActive="active"
+        *ngFor="let data of listMenu"
+        [routerLink]="data.route"
+      >
+        <clr-icon [attr.shape]="data.icon" clrVerticalNavIcon></clr-icon>
+        {{ data.application_name }}
+      </a>
+    </clr-vertical-nav>
+
+    <div class="content-area">
+      <div class="card">
+        <div class="card-block"><router-outlet></router-outlet></div>
+      </div>
+    </div>
+  </div>
+</clr-main-container>

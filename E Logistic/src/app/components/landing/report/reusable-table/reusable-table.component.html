@@ -1,0 +1,22 @@
+<ly-field class="full-width">
+  <input
+    lyNativeControl
+    type="text"
+    placeholder="Filter {{ filterLabel }}"
+    name="filter"
+    (keyup)="updateFilter($event)"
+  />
+</ly-field>
+<ngx-datatable
+  #table
+  [rows]="rows"
+  [columns]="columns"
+  class="material"
+  [headerHeight]="50"
+  [footerHeight]="50"
+  rowHeight="auto"
+  columnMode="force"
+  [limit]="10"
+  [scrollbarH]="true"
+>
+</ngx-datatable>

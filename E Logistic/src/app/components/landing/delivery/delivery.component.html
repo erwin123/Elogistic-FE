@@ -1,0 +1,286 @@
+<ly-grid container spacing="16 8@XSmall"
+  ><ly-grid item col="12 12@XSmall">
+    <p class="menu-title">
+      Deliver
+    </p>
+  </ly-grid>
+</ly-grid>
+
+<div class="container-comparison">
+  <ly-grid container col="12">
+    <ly-grid item col="3 6@XSmall">
+      <p><strong>Project</strong></p>
+    </ly-grid>
+    <ly-grid item col="3 6@XSmall">
+      <p>{{ deliveryData.project_name }}</p>
+    </ly-grid>
+    <ly-grid item col="3 6@XSmall">
+      <p><strong>Requester</strong></p>
+    </ly-grid>
+    <ly-grid item col="3 6@XSmall">
+      <p>{{ deliveryData.created_by }}</p>
+    </ly-grid>
+    <ly-grid item col="3 6@XSmall">
+      <p><strong>Zone</strong></p>
+    </ly-grid>
+    <ly-grid item col="3 6@XSmall">
+      <p>{{ deliveryData.zone_name }}</p>
+    </ly-grid>
+    <ly-grid item col="3 6@XSmall">
+      <p><strong>No. Order</strong></p>
+    </ly-grid>
+    <ly-grid item col="3 6@XSmall">
+      <p>{{ deliveryData.order_no }}</p>
+    </ly-grid>
+    <ly-grid item col="3 6@XSmall">
+      <p><strong>Area</strong></p>
+    </ly-grid>
+    <ly-grid item col="3 6@XSmall">
+      <p>{{ deliveryData.area_name }}</p>
+    </ly-grid>
+    <ly-grid item col="3 6@XSmall">
+      <p><strong>No. Reservation</strong></p>
+    </ly-grid>
+    <ly-grid item col="3 6@XSmall">
+      <p>{{ deliveryData.no_reservasi }}</p>
+    </ly-grid>
+  </ly-grid>
+  <p style="color: gray"><strong>Pick Up Location</strong></p>
+  <!-- <form (ngSubmit)="submitDelivery()"> -->
+  <ly-grid
+    container
+    col="12"
+    class="border-content"
+    style="border-radius: 5px;"
+  >
+    <ly-grid item col="12 12@XSmall">
+      <ly-field class="full-width">
+        <input
+          class="full-width"
+          lyNativeControl
+          placeholder="Location"
+          readonly
+          name="location"
+          [(ngModel)]="locationDelivery"
+        />
+      </ly-field>
+      <ly-field class="full-width">
+        <input
+          class="full-width"
+          lyNativeControl
+          placeholder="PIC"
+          disabled
+          [(ngModel)]="pic"
+          name="pic"
+        />
+      </ly-field>
+      <ly-field class="full-width">
+        <input
+          class="full-width"
+          lyNativeControl
+          placeholder="Date & Time"
+          disabled
+          [(ngModel)]="deliveryDate"
+        /> </ly-field
+      ><ly-field class="full-width">
+        <input
+          class="full-width"
+          lyNativeControl
+          placeholder="Pick Up By"
+          name="pickUpBy"
+          [(ngModel)]="pick_up_by"
+        />
+      </ly-field>
+    </ly-grid>
+    <ly-grid item col="12" align="center">
+      <ly-tabs [alignTabs]="'stretch'" class="full-width">
+        <ly-tab>
+          <button ly-tab-label>Delivery Photos</button>
+          <div lyTyp="body1">
+            <div [className]="classes.actions" class="full-width">
+              <span [className]="classes.flex"></span>
+              <!-- Hidden input -->
+              <input
+                #_fileInput
+                type="file"
+                (change)="cropping.selectInputEvent($event)"
+                accept="image/*"
+                hidden
+              />
+            </div>
+
+            <div *ngIf="cropping.isLoaded" style="text-align: center">
+              <button (click)="cropping.clean(); croppedImage = ''" ly-button>
+                <i class="fas fa-times"></i>
+              </button>
+              <br />
+              <button (click)="cropping.zoomIn()" ly-button appearance="icon">
+                <ly-icon>zoom_in</ly-icon>
+              </button>
+              <button (click)="cropping.zoomOut()" ly-button appearance="icon">
+                <ly-icon>zoom_out</ly-icon>
+              </button>
+              <button
+                (click)="cropping.rotate(-90)"
+                ly-button
+                appearance="icon"
+              >
+                <ly-icon>rotate_90_degrees_ccw</ly-icon>
+              </button>
+            </div>
+
+            <ly-img-cropper
+              [withClass]="classes.cropping"
+              #cropping
+              [config]="myConfig"
+              [(scale)]="scale"
+              (cropped)="onCropped($event)"
+              (loaded)="onloaded($event)"
+              (error)="onerror($event)"
+              style="left: 0;
+              right: 0;
+              margin: auto;"
+            >
+              <span
+                ><button
+                  type="button"
+                  ly-button
+                  appearance="miniFab"
+                  raised
+                  bg="primary"
+                >
+                  <i class="fas fa-camera"></i></button
+              ></span>
+            </ly-img-cropper>
+
+            <!-- <button
+              *ngIf="cropping.isLoaded"
+              color="primary"
+              (click)="cropping.crop()"
+              ly-button
+            >
+              <ly-icon>crop</ly-icon>crop
+            </button> -->
+          </div>
+        </ly-tab>
+        <ly-tab>
+          <button ly-tab-label>Material Photos</button>
+          <div lyTyp="body1">
+            <div [className]="classes.actions" class="full-width">
+              <span [className]="classes.flex"></span>
+              <!-- Hidden input -->
+              <input
+                #_fileInput
+                type="file"
+                (change)="croppingMaterial.selectInputEvent($event)"
+                accept="image/*"
+                hidden
+              />
+            </div>
+
+            <div *ngIf="croppingMaterial.isLoaded" style="text-align: center">
+              <button
+                (click)="croppingMaterial.clean(); croppedImageMaterial = ''"
+                ly-button
+              >
+                <i class="fas fa-times"></i>
+              </button>
+              <br />
+              <button
+                (click)="croppingMaterial.zoomIn()"
+                ly-button
+                appearance="icon"
+              >
+                <ly-icon>zoom_in</ly-icon>
+              </button>
+              <button
+                (click)="croppingMaterial.zoomOut()"
+                ly-button
+                appearance="icon"
+              >
+                <ly-icon>zoom_out</ly-icon>
+              </button>
+              <button
+                (click)="croppingMaterial.rotate(-90)"
+                ly-button
+                appearance="icon"
+              >
+                <ly-icon>rotate_90_degrees_ccw</ly-icon>
+              </button>
+            </div>
+
+            <ly-img-cropper
+              [withClass]="classes.cropping"
+              #croppingMaterial
+              [config]="myConfig"
+              [(scale)]="scale"
+              (cropped)="onCroppedMaterial($event)"
+              (loaded)="onloaded($event)"
+              (error)="onerror($event)"
+              style="left: 0;
+              right: 0;
+              margin: auto;"
+            >
+              <span
+                ><button
+                  type="button"
+                  ly-button
+                  appearance="miniFab"
+                  raised
+                  bg="primary"
+                >
+                  <i class="fas fa-camera"></i></button
+              ></span>
+            </ly-img-cropper>
+
+            <!-- <button
+              *ngIf="cropping.isLoaded"
+              color="primary"
+              (click)="cropping.crop()"
+              ly-button
+            >
+              <ly-icon>crop</ly-icon>crop
+            </button> -->
+          </div>
+        </ly-tab>
+      </ly-tabs>
+    </ly-grid>
+  </ly-grid>
+  <ly-grid container col="12">
+    <ly-grid item col="12 12@XSmall">
+      <ly-field class="full-width">
+        <input
+          class="full-width"
+          lyNativeControl
+          placeholder="Input No. Good Issue / Material Document"
+          name="noGI"
+          [(ngModel)]="no_good_issue"
+        />
+      </ly-field>
+    </ly-grid>
+  </ly-grid>
+  <ly-grid container col="12">
+    <ly-grid item col="12">
+      <button
+        ly-button
+        raised
+        bg="primary"
+        style="float: right"
+        class="full-width-button"
+        (click)="confirmSubmitDelivery()"
+      >
+        Deliver
+      </button>
+    </ly-grid>
+  </ly-grid>
+  <!-- </form> -->
+  <br />
+</div>
+<ngx-confirm-box
+  bgColor="rgba(0,0,0,0.5)"
+  confirmHeading="SAVE"
+  confirmCanceltext="No"
+  confirmContent="Are your sure?"
+  confirmOkaytext="Yes"
+  (confirmEvt)="submitDelivery($event)"
+></ngx-confirm-box>

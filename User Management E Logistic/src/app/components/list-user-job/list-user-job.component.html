@@ -1,0 +1,70 @@
+<h1>List User - {{ jobName }}</h1>
+<hr />
+<app-add-user-job></app-add-user-job>
+<br />
+<div class="clr-row clr-justify-content-end">
+  <button type="button" class="btn btn-icon" (click)="getUserJob()">
+    <clr-icon shape="refresh"></clr-icon>
+  </button>
+</div>
+
+<!-- List User Job -->
+<clr-datagrid style="margin-bottom: 25px;">
+  <clr-dg-column>No.</clr-dg-column>
+  <clr-dg-column [clrDgField]="'username'" clrDgSortOrder="ascSort"
+    >Username</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'job_code'" clrDgSortOrder="ascSort"
+    >Job Code</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'job_desc'" clrDgSortOrder="ascSort"
+    >Job Desc</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'is_active'" clrDgSortOrder="ascSort"
+    >Status</clr-dg-column
+  >
+  <clr-dg-column>Action</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let data of listUserJob; index as i">
+    <clr-dg-cell>{{ i + 1 }}</clr-dg-cell>
+    <clr-dg-cell>{{ data.username }}</clr-dg-cell>
+    <clr-dg-cell>{{ data.job_code }}</clr-dg-cell>
+    <clr-dg-cell>{{ data.job_desc }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span *ngIf="data.is_active == 1">Active</span>
+      <span *ngIf="data.is_active == 0">Non-Active</span>
+    </clr-dg-cell>
+    <clr-dg-cell>
+      <div class="btn-group btn-icon">
+        <button
+          *ngIf="data.is_active == 1"
+          class="btn btn-primary"
+          (click)="activeDeactiveUserJob(data)"
+        >
+          <clr-icon shape="times-circle"></clr-icon>
+        </button>
+        <button
+          *ngIf="data.is_active == 0"
+          class="btn btn-success"
+          (click)="activeDeactiveUserJob(data)"
+        >
+          <clr-icon shape="check"></clr-icon>
+        </button>
+        <button class="btn btn-danger" (click)="deleteUserJob(data)">
+          <clr-icon shape="trash"></clr-icon>
+        </button>
+      </div>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgPageSize]="10">
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]"
+        >Data per page</clr-dg-page-size
+      >
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+      {{ pagination.totalItems }} data
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+<!-- End List User Job -->

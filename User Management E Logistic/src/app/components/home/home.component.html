@@ -1,0 +1,22 @@
+<h1>News</h1>
+<hr />
+<div class="clr-row">
+  <div
+    class="clr-col-lg-4 clr-col-md-12 clr-col-sm-12"
+    *ngFor="let data of listArticles"
+  >
+    <div class="card">
+      <div class="card-header">
+        <b>{{ data.title }}</b>
+      </div>
+      <div class="card-block">
+        <div class="card-img">
+          <img [src]="data.image" />
+        </div>
+        <div class="card-text">
+          <p>{{ data.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

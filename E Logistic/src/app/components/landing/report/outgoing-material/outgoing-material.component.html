@@ -1,0 +1,115 @@
+<ly-grid container spacing="16 8@XSmall"
+  ><ly-grid item col="12 12@XSmall">
+    <p class="menu-title">
+      Report Outgoing Material
+    </p>
+  </ly-grid>
+</ly-grid>
+<ly-grid container spacing="16 8@XSmall">
+  <ly-grid item container col="6 12@XSmall">
+    <ly-grid item col="6 12@XSmall">
+      <ly-field class="full-width">
+        <ly-label>Project</ly-label>
+        <ly-select name="project" required [(ngModel)]="project">
+          <ly-option [value]="0">-- Select Project --</ly-option>
+          <ly-option
+            *ngFor="let data of listProject"
+            [value]="data.plant_code"
+            style="width: 100% !important;"
+            >{{ data.project_name | slice: 0:20 }}</ly-option
+          >
+        </ly-select>
+      </ly-field>
+    </ly-grid>
+    <ly-grid item col="6 12@XSmall">
+      <ly-field class="full-width">
+        <ly-label>Quantity / Order Amount</ly-label>
+        <ly-select name="filter" required [(ngModel)]="filter">
+          <ly-option [value]="0">-- Select Filter --</ly-option>
+          <ly-option [value]="1">1. Quantity</ly-option>
+          <ly-option [value]="2">2. Order Amount</ly-option>
+        </ly-select>
+      </ly-field>
+    </ly-grid>
+    <ly-grid item col="6 12@XSmall">
+      <ly-field class="full-width">
+        <input
+          lyNativeControl
+          [owlDateTime]="startDate"
+          [owlDateTimeTrigger]="startDate"
+          placeholder="Start Date"
+          readonly
+          [max]="maxDate"
+          name="startDatePeriode"
+          [(ngModel)]="startDatePeriode"
+          (ngModelChange)="onChangeStartDate()"
+        />
+        <span [owlDateTimeTrigger]="startDate"
+          ><i class="fa fa-calendar"></i
+        ></span>
+        <owl-date-time #startDate [pickerType]="'calendar'"></owl-date-time>
+      </ly-field>
+    </ly-grid>
+    <ly-grid item col="6 12@XSmall">
+      <ly-field class="full-width">
+        <input
+          lyNativeControl
+          [owlDateTime]="endDate"
+          placeholder="End Date"
+          disabled="true"
+          name="endDatePeriode"
+          [(ngModel)]="endDatePeriode"
+        />
+        <span><i class="fa fa-calendar"></i></span>
+        <owl-date-time #endDate [pickerType]="'calendar'"></owl-date-time>
+      </ly-field>
+    </ly-grid>
+    <ly-grid item col="12 12@XSmall">
+      <button
+        ly-button
+        raised
+        bg="primary"
+        style="float: right"
+        class="full-width-button"
+        (click)="onSubmit()"
+      >
+        Search
+      </button>
+    </ly-grid>
+  </ly-grid>
+  <ly-grid item col="6 12@XSmall">
+    <br />
+    <span style="font-weight: bold;">Top 10 Most Request Material</span>
+    <ngx-charts-advanced-pie-chart
+      [view]="view"
+      [results]="multi"
+      [scheme]="colorScheme"
+      animations="true"
+    >
+    </ngx-charts-advanced-pie-chart>
+  </ly-grid>
+  <ly-grid item col="12 12@XSmall">
+    <div style="overflow-x: auto;">
+      <app-reusable-table
+        [rows]="rows"
+        [temp]="rows"
+        [columns]="columns"
+        filterBy="material_name"
+        filterLabel="Material Name"
+      ></app-reusable-table>
+    </div>
+  </ly-grid>
+  <ly-grid item col="12 12@XSmall" style="margin-bottom: 25px;">
+    <button
+      ly-button
+      raised
+      bg="primary"
+      style="float: right"
+      class="full-width-button"
+      [disabled]="listOutgoingMaterial.length == 0"
+      (click)="exportToExcel()"
+    >
+      <i class="fas fa-download"></i>
+    </button>
+  </ly-grid>
+</ly-grid>

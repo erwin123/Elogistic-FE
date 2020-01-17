@@ -1,0 +1,89 @@
+<div class="clr-row">
+  <div class="clr-col-xl-6 clr-col-lg-6 clr-col-md-12 clr-col-sm-12 clr-col-12">
+    <form clrForm ngNativeValidate (ngSubmit)="submit()">
+      <clr-input-container>
+        <label>Title</label>
+        <input
+          clrInput
+          type="text"
+          name="title"
+          class="full-width"
+          required
+          maxlength="50"
+          minlength="4"
+          [(ngModel)]="newArticle.title"
+        />
+      </clr-input-container>
+      <clr-textarea-container>
+        <label>Description</label>
+        <textarea
+          clrTextarea
+          name="description"
+          class="full-width"
+          required
+          maxlength="255"
+          [(ngModel)]="newArticle.description"
+        ></textarea>
+      </clr-textarea-container>
+      <clr-select-container>
+        <label>Application</label>
+        <select
+          clrSelect
+          name="applications"
+          class="full-width"
+          required
+          [(ngModel)]="newArticle.application_id"
+        >
+          <option value="0" selected>ALL</option>
+          <option
+            *ngFor="let dataApp of listApplication"
+            [value]="dataApp.id"
+            >{{ dataApp.application_name }}</option
+          >
+        </select>
+      </clr-select-container>
+      <clr-input-container>
+        <label>Image</label>
+        <input
+          clrInput
+          type="file"
+          name="image"
+          capture="camera"
+          accept="image/*"
+          (change)="onFileChange($event)"
+          required
+          [(ngModel)]="fileImage"
+        />
+      </clr-input-container>
+      <clr-date-container>
+        <label>Start Date</label>
+        <input
+          type="date"
+          clrDate
+          name="startDate"
+          class="full-width"
+          required
+          readonly
+          [(ngModel)]="startDate"
+        />
+      </clr-date-container>
+      <clr-date-container>
+        <label>End Date</label>
+        <input
+          type="date"
+          clrDate
+          name="endDate"
+          class="full-width"
+          required
+          readonly
+          [(ngModel)]="endDate"
+        />
+      </clr-date-container>
+      <br />
+      <div class="clr-row clr-justify-content-end">
+        <button type="submit" class="btn btn-success">Add</button>
+        <button type="reset" class="btn">Clear</button>
+      </div>
+    </form>
+  </div>
+</div>

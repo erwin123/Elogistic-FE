@@ -1,0 +1,98 @@
+<ly-grid container spacing="16 8@XSmall"
+  ><ly-grid item col="12 12@XSmall">
+    <p class="menu-title">
+      Report Stock
+    </p>
+  </ly-grid>
+</ly-grid>
+
+<span
+  style="color: rgb(85, 85, 85); text-align: right; float: right; margin-bottom: 10px;"
+  >Last Update {{ lastUpdateStock | date: "dd LLL yyyy" }}</span
+>
+<ly-grid container spacing="16 8@XSmall" class="border-content">
+  <ly-grid item col="12 12@XSmall">
+    <h3>Search</h3>
+  </ly-grid>
+  <!-- <ly-grid item col="6 12@XSmall">
+    <ly-field class="full-width">
+      <input lyNativeControl placeholder="Material Code" />
+    </ly-field>
+  </ly-grid> -->
+  <ly-grid item col="6 12@XSmall">
+    <ly-field class="full-width">
+      <ly-label>Plant</ly-label>
+      <ly-select
+        name="plant"
+        [(ngModel)]="project"
+        (ngModelChange)="onChangePlant($event)"
+      >
+        <ly-option selected value="">-- Select Plant --</ly-option>
+        <ly-option *ngFor="let data of listProjects" [value]="data.id">{{
+          data.project_name
+        }}</ly-option>
+      </ly-select>
+    </ly-field>
+  </ly-grid>
+  <!-- <ly-grid item col="6 12@XSmall">
+    <ly-field class="full-width">
+      <input lyNativeControl placeholder="Material Name" />
+    </ly-field>
+  </ly-grid> -->
+  <ly-grid item col="6 12@XSmall">
+    <ly-field class="full-width">
+      <ly-label>Storage Location</ly-label>
+      <ly-select name="sloc" [(ngModel)]="sloc">
+        <ly-option selected value="">-- Select Storage Location --</ly-option>
+        <ly-option
+          *ngFor="let data of listSloc"
+          [value]="data.storage_location_code"
+          >{{ data.storage_location_desc }}</ly-option
+        >
+      </ly-select>
+    </ly-field></ly-grid
+  >
+  <ly-grid item col="12 12@XSmall">
+    <button
+      ly-button
+      raised
+      bg="primary"
+      style="float: right"
+      class="full-width-button"
+      (click)="getStock()"
+    >
+      Search
+    </button>
+  </ly-grid>
+</ly-grid>
+
+<ly-grid container spacing="16 8@XSmall" style="margin-top:20px;"
+  ><ly-grid item col="12 12@XSmall">
+    <div style="overflow-x: auto;">
+      <app-reusable-table
+        [rows]="rows"
+        [temp]="rows"
+        [columns]="columns"
+        filterBy="material_desc"
+        filterLabel="Material Name"
+      ></app-reusable-table>
+    </div>
+    <!-- </div> -->
+  </ly-grid>
+</ly-grid>
+
+<ly-grid container spacing="16 8@XSmall">
+  <ly-grid item col="12 12@XSmall" style="margin-bottom: 25px;">
+    <button
+      ly-button
+      raised
+      bg="primary"
+      style="float: right"
+      class="full-width-button"
+      [disabled]="rows.length == 0"
+      (click)="exportToExcel()"
+    >
+      <i class="fas fa-download"></i>
+    </button>
+  </ly-grid>
+</ly-grid>

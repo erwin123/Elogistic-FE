@@ -1,0 +1,7 @@
+{
+  "api_url": "https://api-elogistic.acset.co/",
+  "api_elastic_search": "https://dev-elog-elastic.acset.co/",
+  "api_url_login": "https://api-um-elogistic.acset.co/",
+  "index_name_elastic_search": "material",
+  "application_id": 6
+}

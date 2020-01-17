@@ -1,0 +1,129 @@
+<div>
+  <ly-paper>
+    <ly-toolbar position="static" bg="primary" [elevation]="3">
+      <button
+        ly-button
+        color="primary:contrast"
+        appearance="icon"
+        (click)="_drawer.toggle()"
+      >
+        <ly-icon>menu</ly-icon>
+      </button>
+      <h6 lyTyp="title" [withClass]="classes.grow">
+        <img class="logo" src="assets/images/logo.png" style="height: 35px;" />
+      </h6>
+      <!-- <button color="primary:contrast" ly-button>
+        <i class="fas fa-bell"></i>
+      </button> -->
+      <button [lyMenuTriggerFor]="menu" color="primary:contrast" ly-button>
+        <span
+          >{{ loggedElogistik.data.profileUser[0].full_name }}
+          <i class="fas fa-caret-down"></i
+        ></span>
+      </button>
+      <ng-template #menu let-M>
+        <ly-menu [ref]="M" placement="before" yPosition="below">
+          <button ly-button ly-menu-item type="button" routerLink="profile">
+            <i class="fas fa-user"></i> Profile
+          </button>
+          <button
+            ly-button
+            ly-menu-item
+            type="button"
+            routerLink="change-password"
+          >
+            <i class="fas fa-key"></i> Change Password
+          </button>
+          <button ly-button ly-menu-item (click)="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </ly-menu>
+      </ng-template>
+    </ly-toolbar>
+
+    <ly-drawer-container [withClass]="classes.drawerContainer">
+      <ly-drawer
+        #_drawer="lyDrawer"
+        ly-paper
+        [opened]="!mobileQuery.matches"
+        position="before"
+        [mode]="mobileQuery.matches ? 'over' : 'side'"
+        width="250px"
+        [hasBackdrop]="mobileQuery.matches ? true : false"
+      >
+        <ly-list>
+          <button
+            ly-list-item
+            routerLink="home"
+            (click)="mobileQuery.matches ? _drawer.toggle() : ''"
+          >
+            <span ly-line>
+              <ly-grid container [spacing]="16">
+                <ly-grid item [col]="2">
+                  <i class="fas fa-home"></i>
+                </ly-grid>
+                <ly-grid item [col]="6">Home</ly-grid>
+              </ly-grid>
+            </span>
+          </button>
+          <button
+            ly-list-item
+            (click)="mobileQuery.matches ? _drawer.toggle() : ''"
+            *ngFor="let data of listMenuSideLeft"
+            routerLink="{{ data.route }}"
+          >
+            <span ly-line>
+              <ly-grid container [spacing]="16">
+                <ly-grid item [col]="2">
+                  <i class="fas {{ data.icon }}"></i>
+                </ly-grid>
+                <ly-grid item [col]="6">
+                  {{ data.application_name }}
+                </ly-grid>
+              </ly-grid>
+            </span>
+          </button>
+          <ly-accordion appearance="popOut" *ngIf="listMenuReport.length > 0">
+            <ly-expansion-panel
+              style="background: none !important; box-shadow: none !important;"
+            >
+              <ly-expansion-panel-header>
+                <ly-panel-title>
+                  <i class="fas fa-chart-bar"></i>
+                  Report
+                </ly-panel-title>
+              </ly-expansion-panel-header>
+              <ng-template lyExpansionPanelContent>
+                <button
+                  ly-list-item
+                  (click)="mobileQuery.matches ? _drawer.toggle() : ''"
+                  *ngFor="let data of listMenuReport"
+                  routerLink="{{ data.route }}"
+                >
+                  <span ly-line>
+                    <ly-grid container [spacing]="16">
+                      <ly-grid item [col]="2">
+                        <i class="fas {{ data.icon }}"></i>
+                      </ly-grid>
+                      <ly-grid item [col]="6">
+                        {{ data.application_name }}
+                      </ly-grid>
+                    </ly-grid>
+                  </span>
+                </button>
+              </ng-template>
+            </ly-expansion-panel>
+          </ly-accordion>
+        </ly-list>
+      </ly-drawer>
+
+      <ly-drawer-content [withClass]="classes.drawerContentArea"
+        ><ly-card>
+          <ly-card-content>
+            <router-outlet></router-outlet>
+          </ly-card-content>
+        </ly-card>
+      </ly-drawer-content>
+    </ly-drawer-container>
+  </ly-paper>
+</div>

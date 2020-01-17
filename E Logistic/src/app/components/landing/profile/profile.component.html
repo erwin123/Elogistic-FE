@@ -1,0 +1,68 @@
+<div class="container-comparison" style="margin-bottom: 20px;">
+  <div class="border-content">
+    <h2>Profile</h2>
+    <hr />
+    <form (ngSubmit)="updateUser()" ngNativeValidate>
+      <ly-field class="full-width">
+        <input
+          lyNativeControl
+          placeholder="Username"
+          name="username"
+          required
+          disabled
+          readonly
+          [(ngModel)]="detailUser.username"
+        />
+      </ly-field>
+      <ly-field class="full-width">
+        <input
+          lyNativeControl
+          placeholder="Full Name"
+          name="fullname"
+          required
+          [(ngModel)]="detailUser.full_name"
+        />
+      </ly-field>
+      <ly-field class="full-width">
+        <ly-label>Gender</ly-label>
+        <ly-select name="gender" required [(ngModel)]="detailUser.gender">
+          <ly-option>-- Select Gender --</ly-option>
+          <ly-option value="L">Male</ly-option>
+          <ly-option value="P">Female</ly-option>
+        </ly-select>
+      </ly-field>
+      <ly-field class="full-width">
+        <input
+          lyNativeControl
+          placeholder="E-mail"
+          name="email"
+          required
+          [(ngModel)]="detailUser.email"
+        />
+      </ly-field>
+      <ly-field class="full-width">
+        <input
+          lyNativeControl
+          placeholder="Phone Number"
+          name="phoneNumber"
+          required
+          [(ngModel)]="detailUser.no_handphone"
+        />
+      </ly-field>
+      <ly-grid container spacing="16 8@XSmall">
+        <ly-grid item col="12 12@XSmall">
+          <button
+            ly-button
+            raised
+            bg="primary"
+            style="float: right"
+            class="full-width-button"
+            type="submit"
+          >
+            Save
+          </button>
+        </ly-grid>
+      </ly-grid>
+    </form>
+  </div>
+</div>

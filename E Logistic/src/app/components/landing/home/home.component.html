@@ -1,0 +1,16 @@
+<ly-grid container spacing="16 8@XSmall">
+  <ly-grid item col="4 12@XSmall" *ngFor="let item of items">
+    <ly-card>
+      <h2 lyTyp="headline" gutterBottom style="margin-left: 8px;">
+        {{ item.title }}
+      </h2>
+      <hr />
+      <ly-card-media [bgImg]="item.image" [title]="item.title"></ly-card-media>
+      <ly-card-content>
+        <p lyTyp="body1">
+          {{ item.description }}
+        </p>
+      </ly-card-content>
+    </ly-card>
+  </ly-grid>
+</ly-grid>

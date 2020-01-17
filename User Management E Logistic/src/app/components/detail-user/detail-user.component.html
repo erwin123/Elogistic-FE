@@ -1,0 +1,291 @@
+<h1>Detail User</h1>
+<hr />
+<div class="clr-row">
+  <div
+    class="clr-col-xl-6 clr-col-lg-6 clr-col-md-12 clr-col-sm-12 clr-col-12"
+    style="overflow: auto;"
+  >
+    <div class="clr-row">
+      <div class="clr-col-5">Username</div>
+      <div class="clr-col-1">:</div>
+      <div class="clr-col-6">{{ userDetail.username }}</div>
+    </div>
+    <div class="clr-row">
+      <div class="clr-col-5">Fullname</div>
+      <div class="clr-col-1">:</div>
+      <div class="clr-col-6">{{ userDetail.full_name }}</div>
+    </div>
+    <div class="clr-row">
+      <div class="clr-col-5">Gender</div>
+      <div class="clr-col-1">:</div>
+      <div class="clr-col-6">
+        {{ userDetail.gender == "L" ? "Laki-laki" : "Perempuan" }}
+      </div>
+    </div>
+    <div class="clr-row">
+      <div class="clr-col-5">E-mail</div>
+      <div class="clr-col-1">:</div>
+      <div class="clr-col-6">
+        {{ userDetail.email }}
+      </div>
+    </div>
+    <div class="clr-row">
+      <div class="clr-col-5">Phone Number</div>
+      <div class="clr-col-1">:</div>
+      <div class="clr-col-6">
+        {{ userDetail.no_handphone }}
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+<clr-tabs>
+  <clr-tab>
+    <button clrTabLink id="link1">JOB</button>
+    <clr-tab-content id="content1">
+      <clr-datagrid style="margin-bottom: 25px;">
+        <clr-dg-column>No.</clr-dg-column>
+        <clr-dg-column [clrDgField]="'job_code'" clrDgSortOrder="ascSort"
+          >Job Code</clr-dg-column
+        >
+        <clr-dg-column [clrDgField]="'job_desc'" clrDgSortOrder="ascSort"
+          >Job Desc</clr-dg-column
+        >
+        <clr-dg-column [clrDgField]="'is_active'" clrDgSortOrder="ascSort"
+          >Status</clr-dg-column
+        >
+        <clr-dg-column>Action</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let data of listJob; index as i">
+          <clr-dg-cell>{{ i + 1 }}</clr-dg-cell>
+          <clr-dg-cell>{{ data.job_code }}</clr-dg-cell>
+          <clr-dg-cell>{{ data.job_desc }}</clr-dg-cell>
+          <clr-dg-cell>
+            <span *ngIf="data.is_active == 1">Active</span>
+            <span *ngIf="data.is_active == 0">Non-Active</span>
+          </clr-dg-cell>
+          <clr-dg-cell>
+            <div class="btn-group btn-icon">
+              <button
+                *ngIf="data.is_active == 1"
+                class="btn btn-primary"
+                (click)="activeDeactiveJob(data)"
+              >
+                <clr-icon shape="times-circle"></clr-icon>
+              </button>
+              <button
+                *ngIf="data.is_active == 0"
+                class="btn btn-success"
+                (click)="activeDeactiveJob(data)"
+              >
+                <clr-icon shape="check"></clr-icon>
+              </button>
+              <button class="btn btn-danger" (click)="deleteJob(data)">
+                <clr-icon shape="trash"></clr-icon>
+              </button>
+            </div>
+          </clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>
+          <clr-dg-pagination #pagination [clrDgPageSize]="10">
+            <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]"
+              >Data per page</clr-dg-page-size
+            >
+            {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+            {{ pagination.totalItems }} data
+          </clr-dg-pagination>
+        </clr-dg-footer>
+      </clr-datagrid>
+    </clr-tab-content>
+  </clr-tab>
+  <clr-tab>
+    <button clrTabLink>PROJECT</button>
+    <clr-tab-content>
+      <clr-datagrid style="margin-bottom: 25px;">
+        <clr-dg-column>No.</clr-dg-column>
+        <clr-dg-column [clrDgField]="'plant_code'" clrDgSortOrder="ascSort"
+          >Plant Code</clr-dg-column
+        >
+        <clr-dg-column [clrDgField]="'project_name'" clrDgSortOrder="ascSort"
+          >Project Name</clr-dg-column
+        >
+        <clr-dg-column [clrDgField]="'is_active'" clrDgSortOrder="ascSort"
+          >Status</clr-dg-column
+        >
+        <clr-dg-column>Action</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let data of listProject; index as i">
+          <clr-dg-cell>{{ i + 1 }}</clr-dg-cell>
+          <clr-dg-cell>{{ data.plant_code }}</clr-dg-cell>
+          <clr-dg-cell>{{ data.project_name }}</clr-dg-cell>
+          <clr-dg-cell>
+            <span *ngIf="data.is_active == 1">Active</span>
+            <span *ngIf="data.is_active == 0">Non-Active</span>
+          </clr-dg-cell>
+          <clr-dg-cell>
+            <div class="btn-group btn-icon">
+              <button
+                *ngIf="data.is_active == 1"
+                class="btn btn-primary"
+                (click)="activeDeactiveProject(data)"
+              >
+                <clr-icon shape="times-circle"></clr-icon>
+              </button>
+              <button
+                *ngIf="data.is_active == 0"
+                class="btn btn-success"
+                (click)="activeDeactiveProject(data)"
+              >
+                <clr-icon shape="check"></clr-icon>
+              </button>
+              <button class="btn btn-danger" (click)="deleteProject(data)">
+                <clr-icon shape="trash"></clr-icon>
+              </button>
+            </div>
+          </clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>
+          <clr-dg-pagination #pagination [clrDgPageSize]="10">
+            <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]"
+              >Data per page</clr-dg-page-size
+            >
+            {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+            {{ pagination.totalItems }} data
+          </clr-dg-pagination>
+        </clr-dg-footer>
+      </clr-datagrid>
+    </clr-tab-content>
+  </clr-tab>
+  <clr-tab>
+    <button clrTabLink>ZONE</button>
+    <clr-tab-content>
+      <clr-datagrid style="margin-bottom: 25px;">
+        <clr-dg-column>No.</clr-dg-column>
+        <clr-dg-column [clrDgField]="'plant_code'" clrDgSortOrder="ascSort"
+          >Plant Code</clr-dg-column
+        >
+        <clr-dg-column [clrDgField]="'project_name'" clrDgSortOrder="ascSort"
+          >Project Name</clr-dg-column
+        >
+        <clr-dg-column [clrDgField]="'zone_name'" clrDgSortOrder="ascSort"
+          >Zone Name</clr-dg-column
+        >
+        <clr-dg-column [clrDgField]="'is_active'" clrDgSortOrder="ascSort"
+          >Status</clr-dg-column
+        >
+        <clr-dg-column>Action</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let data of listZone; index as i">
+          <clr-dg-cell>{{ i + 1 }}</clr-dg-cell>
+          <clr-dg-cell>{{ data.plant_code }}</clr-dg-cell>
+          <clr-dg-cell>{{ data.project_name }}</clr-dg-cell>
+          <clr-dg-cell>{{ data.zone_name }}</clr-dg-cell>
+          <clr-dg-cell>
+            <span *ngIf="data.is_active == 1">Active</span>
+            <span *ngIf="data.is_active == 0">Non-Active</span>
+          </clr-dg-cell>
+          <clr-dg-cell>
+            <div class="btn-group btn-icon">
+              <button
+                *ngIf="data.is_active == 1"
+                class="btn btn-primary"
+                (click)="activeDeactiveZone(data)"
+              >
+                <clr-icon shape="times-circle"></clr-icon>
+              </button>
+              <button
+                *ngIf="data.is_active == 0"
+                class="btn btn-success"
+                (click)="activeDeactiveZone(data)"
+              >
+                <clr-icon shape="check"></clr-icon>
+              </button>
+              <button class="btn btn-danger" (click)="deleteZone(data)">
+                <clr-icon shape="trash"></clr-icon>
+              </button>
+            </div>
+          </clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>
+          <clr-dg-pagination #pagination [clrDgPageSize]="10">
+            <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]"
+              >Data per page</clr-dg-page-size
+            >
+            {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+            {{ pagination.totalItems }} data
+          </clr-dg-pagination>
+        </clr-dg-footer>
+      </clr-datagrid>
+    </clr-tab-content>
+  </clr-tab>
+  <clr-tab>
+    <button clrTabLink>AREA</button>
+    <clr-tab-content>
+      <clr-datagrid style="margin-bottom: 25px;">
+        <clr-dg-column>No.</clr-dg-column>
+        <clr-dg-column [clrDgField]="'plant_code'" clrDgSortOrder="ascSort"
+          >Plant Code</clr-dg-column
+        >
+        <clr-dg-column [clrDgField]="'project_name'" clrDgSortOrder="ascSort"
+          >Project Name</clr-dg-column
+        >
+        <clr-dg-column [clrDgField]="'zone_name'" clrDgSortOrder="ascSort"
+          >Zone Name</clr-dg-column
+        >
+        <clr-dg-column [clrDgField]="'area_name'" clrDgSortOrder="ascSort"
+          >Area Name</clr-dg-column
+        >
+        <clr-dg-column [clrDgField]="'is_active'" clrDgSortOrder="ascSort"
+          >Status</clr-dg-column
+        >
+        <clr-dg-column>Action</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let data of listArea; index as i">
+          <clr-dg-cell>{{ i + 1 }}</clr-dg-cell>
+          <clr-dg-cell>{{ data.plant_code }}</clr-dg-cell>
+          <clr-dg-cell>{{ data.project_name }}</clr-dg-cell>
+          <clr-dg-cell>{{ data.zone_name }}</clr-dg-cell>
+          <clr-dg-cell>{{ data.area_name }}</clr-dg-cell>
+          <clr-dg-cell>
+            <span *ngIf="data.is_active == 1">Active</span>
+            <span *ngIf="data.is_active == 0">Non-Active</span>
+          </clr-dg-cell>
+          <clr-dg-cell>
+            <div class="btn-group btn-icon">
+              <button
+                *ngIf="data.is_active == 1"
+                class="btn btn-primary"
+                (click)="activeDeactiveArea(data)"
+              >
+                <clr-icon shape="times-circle"></clr-icon>
+              </button>
+              <button
+                *ngIf="data.is_active == 0"
+                class="btn btn-success"
+                (click)="activeDeactiveArea(data)"
+              >
+                <clr-icon shape="check"></clr-icon>
+              </button>
+              <button class="btn btn-danger" (click)="deleteArea(data)">
+                <clr-icon shape="trash"></clr-icon>
+              </button>
+            </div>
+          </clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>
+          <clr-dg-pagination #pagination [clrDgPageSize]="10">
+            <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]"
+              >Data per page</clr-dg-page-size
+            >
+            {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+            {{ pagination.totalItems }} data
+          </clr-dg-pagination>
+        </clr-dg-footer>
+      </clr-datagrid>
+    </clr-tab-content>
+  </clr-tab>
+</clr-tabs>

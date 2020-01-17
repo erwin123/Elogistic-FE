@@ -1,0 +1,202 @@
+<ly-grid container spacing="16 8@XSmall"
+  ><ly-grid item col="12 12@XSmall">
+    <p class="menu-title">
+      Recieve Order
+    </p>
+  </ly-grid>
+</ly-grid>
+<div style="text-align: center" *ngIf="listRecieveOrder.length == 0">
+  <p style="color: rgb(151, 148, 148)">No data.</p>
+</div>
+<div class="container-comparison">
+  <ly-accordion [withClass]="classes.expansion" [hasToggle]="false">
+    <ly-expansion-panel
+      *ngFor="let data of listRecieveOrder"
+      style="margin-top: 1em; border-radius: 15px; background-color: #213071; color: white;"
+      color="primary"
+      (opened)="
+        getDetailRecieve(data.tr_recieve_order_id); data.panel_state = 1
+      "
+      (closed)="data.panel_state = 0"
+    >
+      <ly-expansion-panel-header>
+        <ly-panel-title style="color: white;">{{
+          data.order_no
+        }}</ly-panel-title>
+        <button ly-button color="primary" appearance="icon">
+          <ly-expansion-icon
+            style="color: white;"
+            [up]="data.panel_state == 1"
+          ></ly-expansion-icon>
+        </button>
+      </ly-expansion-panel-header>
+      <div class="border-content" style="background-color: white">
+        <ly-grid container col="12">
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>Order Num.</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">{{ data.order_no }}</p>
+          </ly-grid>
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>No. Reservasi</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">{{ data.no_reservasi }}</p>
+          </ly-grid>
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>Delivery By</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">
+              {{ data.delivery_by }}
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>Project</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">
+              {{ data.project_name }}
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>Area</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">
+              {{ data.area_name }}
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>Zona</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">
+              {{ data.zone_name }}
+            </p>
+          </ly-grid>
+          <ly-grid item col="12" class="text-black">
+            <p style="color: black;">
+              <strong>Delivery Picture</strong>
+            </p></ly-grid
+          >
+          <ly-grid container col="12 " align="center">
+            <ly-grid item col="6">
+              <img
+                class="img-delivery"
+                [src]="services.apiUrl + 'images/' + data.delivery_picture"
+                (click)="
+                  services.popupImage(
+                    'Delivery Picture',
+                    services.apiUrl + 'images/' + data.delivery_picture
+                  )
+                "
+              />
+            </ly-grid>
+            <ly-grid item col="6">
+              <img
+                class="img-delivery"
+                [src]="services.apiUrl + 'images/' + data.delivery_picture_2"
+                (click)="
+                  services.popupImage(
+                    'Delivery Picture',
+                    services.apiUrl + 'images/' + data.delivery_picture_2
+                  )
+                "
+              />
+            </ly-grid>
+          </ly-grid>
+          <ly-grid item col="12">
+            <p
+              style="color: black;background-color: rgb(204, 204, 204);text-align: center"
+            >
+              <strong>Material Detail</strong>
+            </p>
+          </ly-grid>
+          <!-- <div *ngFor="let data of panelStates; index as j"> -->
+          <ly-grid
+            item
+            container
+            col="12"
+            *ngFor="let item of detailRecieve; index as j"
+          >
+            <ly-grid item container col="8">
+              <ly-grid item col="2">
+                <label style="color: black;">{{ j + 1 }}</label>
+              </ly-grid>
+              <ly-grid item col="10">
+                <label style="color: black;"
+                  >{{ item.material_desc }} - {{ item.quantity }}
+                  {{ item.base_unit_of_measure }}</label
+                >
+              </ly-grid>
+              <ly-grid item col="2">
+                <label style="color: black;">&nbsp;</label>
+              </ly-grid>
+              <ly-grid item col="10">
+                <label
+                  [class.text-yellow]="item.stock == 3"
+                  [class.text-green]="item.stock == 2"
+                  >{{ item.stock == 2 ? "In Stock" : "Partial" }} </label
+                ><!-- <br />
+                <label style="color: rgb(85, 85, 85);"
+                  >{{
+                    item.recieve_note
+                      ? detailOrder.approval_notes
+                      : "-"
+                  }}
+                </label> -->
+              </ly-grid>
+            </ly-grid>
+            <ly-grid item col="4">
+              <label style="color:black !important"
+                >Sent {{ item.quantity_shipping }}
+                {{ item.base_unit_of_measure }}</label
+              >
+            </ly-grid>
+            <ly-grid item col="1"></ly-grid>
+            <ly-grid item col="11">
+              <ly-field class="full-width">
+                <input
+                  id="recieve_note"
+                  type="text"
+                  placeholder="Recieve Note"
+                  lyNativeControl
+                  name="recieve_note"
+                  [(ngModel)]="item.recieve_note"
+                  required
+                  style="color: black; margin-right: 5px;"
+              /></ly-field>
+            </ly-grid>
+          </ly-grid>
+          <!-- </div> -->
+          <ly-grid item col="11 12@XSmall"
+            ><button
+              ly-button
+              raised
+              bg="primary"
+              style="float: right"
+              class="full-width-button"
+              (click)="recieveOrder()"
+            >
+              Recieve
+            </button>
+          </ly-grid>
+        </ly-grid>
+      </div>
+    </ly-expansion-panel>
+  </ly-accordion>
+</div>

@@ -1,0 +1,181 @@
+<h1>Articles</h1>
+<hr />
+<app-add-articles></app-add-articles>
+<br />
+<div class="clr-row clr-justify-content-end">
+  <button type="button" class="btn btn-icon" (click)="getArticles()">
+    <clr-icon shape="refresh"></clr-icon>
+  </button>
+</div>
+<clr-datagrid style="margin-bottom: 25px;">
+  <clr-dg-column>No.</clr-dg-column>
+  <clr-dg-column [clrDgField]="'title'" clrDgSortOrder="ascSort"
+    >Title</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'image'" clrDgSortOrder="ascSort"
+    >Image</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'description'" clrDgSortOrder="ascSort"
+    >Description</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'application_name'" clrDgSortOrder="ascSort"
+    >Application Name</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'start_date'" clrDgSortOrder="ascSort"
+    >Start Date</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'end_date'" clrDgSortOrder="ascSort"
+    >End Date</clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'is_active'" clrDgSortOrder="ascSort"
+    >Status</clr-dg-column
+  >
+  <clr-dg-column>Action</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let data of listArticles; index as i">
+    <clr-dg-cell>{{ i + 1 }}</clr-dg-cell>
+    <clr-dg-cell>{{ data.title }}</clr-dg-cell>
+    <clr-dg-cell><img [src]="data.image" width="100"/></clr-dg-cell>
+    <clr-dg-cell>{{ data.description }}</clr-dg-cell>
+    <clr-dg-cell>{{ data.application_name }}</clr-dg-cell>
+    <clr-dg-cell>{{ data.start_date | date: "dd MMMM yyyy" }}</clr-dg-cell>
+    <clr-dg-cell>{{ data.end_date | date: "dd MMMM yyyy" }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span *ngIf="data.is_active == 1">Active</span>
+      <span *ngIf="data.is_active == 0">Non-Active</span>
+    </clr-dg-cell>
+    <clr-dg-cell>
+      <div class="btn-group btn-icon">
+        <button
+          *ngIf="data.is_active == 1"
+          class="btn btn-primary"
+          (click)="activeDeactiveArticle(data)"
+        >
+          <clr-icon shape="times-circle"></clr-icon>
+        </button>
+        <button
+          *ngIf="data.is_active == 0"
+          class="btn btn-success"
+          (click)="activeDeactiveArticle(data)"
+        >
+          <clr-icon shape="check"></clr-icon>
+        </button>
+        <button class="btn btn-danger" (click)="deleteArticle(data)">
+          <clr-icon shape="trash"></clr-icon>
+        </button>
+        <button type="button" class="btn" (click)="modalEditArticle(data)">
+          <clr-icon shape="note"></clr-icon>
+        </button>
+      </div>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgPageSize]="10">
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]"
+        >Data per page</clr-dg-page-size
+      >
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+      {{ pagination.totalItems }} data
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="showModalEditArticle" *ngIf="detailArticle">
+  <h3 class="modal-title">Edit Article</h3>
+
+  <div class="modal-body">
+    <form clrForm ngNativeValidate (ngSubmit)="updateArticle()">
+      <clr-input-container>
+        <label>Title</label>
+        <input
+          clrInput
+          type="text"
+          name="title"
+          class="full-width"
+          required
+          maxlength="50"
+          minlength="4"
+          [(ngModel)]="detailArticle.title"
+        />
+      </clr-input-container>
+      <clr-textarea-container>
+        <label>Description</label>
+        <textarea
+          clrTextarea
+          name="description"
+          class="full-width"
+          required
+          maxlength="255"
+          [(ngModel)]="detailArticle.description"
+        ></textarea>
+      </clr-textarea-container>
+      <clr-select-container>
+        <label>Application</label>
+        <select
+          clrSelect
+          name="applications"
+          class="full-width"
+          required
+          [(ngModel)]="detailArticle.application_id"
+        >
+          <option value="0" selected>ALL</option>
+          <option
+            *ngFor="let dataApp of listApplication"
+            [value]="dataApp.id"
+            >{{ dataApp.application_name }}</option
+          >
+        </select>
+      </clr-select-container>
+      <clr-input-container>
+        <label>Image</label>
+        <input
+          clrInput
+          type="file"
+          name="image"
+          capture="camera"
+          accept="image/*"
+          (change)="onFileChange($event)"
+        />
+      </clr-input-container>
+      <clr-date-container>
+        <label>Start Date</label>
+        <input
+          type="date"
+          clrDate
+          name="startDate"
+          class="full-width"
+          required
+          readonly
+          [(ngModel)]="startDate"
+        />
+      </clr-date-container>
+      <clr-date-container>
+        <label>End Date</label>
+        <input
+          type="date"
+          clrDate
+          name="endDate"
+          class="full-width"
+          required
+          readonly
+          [(ngModel)]="endDate"
+        />
+      </clr-date-container>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <form clrForm ngNativeValidate (ngSubmit)="updateArticle()">
+      <button
+        type="button"
+        class="btn btn-outline"
+        (click)="showModalEditArticle = false"
+      >
+        Cancel
+      </button>
+      <button type="submit" class="btn btn-primary">
+        Save
+      </button>
+    </form>
+  </div>
+</clr-modal>

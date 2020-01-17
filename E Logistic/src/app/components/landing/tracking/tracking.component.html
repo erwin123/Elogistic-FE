@@ -1,0 +1,298 @@
+<ly-grid container spacing="16 8@XSmall"
+  ><ly-grid item col="12 12@XSmall">
+    <p class="menu-title">
+      History Order
+    </p>
+  </ly-grid>
+</ly-grid>
+<div class="container-comparison" style="margin-bottom: 20px;">
+  <ly-grid
+    container
+    spacing="16 8@XSmall"
+    style="border: 1px grey solid; border-radius: 15px;padding: 10px;"
+  >
+    <ly-grid item col="6 12@XSmall">
+      <ly-field class="full-width">
+        <input
+          lyNativeControl
+          [owlDateTime]="startDate"
+          [owlDateTimeTrigger]="startDate"
+          placeholder="Start Date"
+          readonly
+          [max]="maxDate"
+          name="startDatePeriode"
+          [(ngModel)]="startDatePeriode"
+          (ngModelChange)="onChangeStartDate()"
+        />
+        <span [owlDateTimeTrigger]="startDate"
+          ><i class="fa fa-calendar"></i
+        ></span>
+        <owl-date-time #startDate [pickerType]="'calendar'"></owl-date-time>
+      </ly-field>
+    </ly-grid>
+    <ly-grid item col="6 12@XSmall">
+      <ly-field class="full-width">
+        <input
+          lyNativeControl
+          [owlDateTime]="endDate"
+          placeholder="End Date"
+          disabled="true"
+          name="endDatePeriode"
+          [(ngModel)]="endDatePeriode"
+        />
+        <span><i class="fa fa-calendar"></i></span>
+        <owl-date-time #endDate [pickerType]="'calendar'"></owl-date-time>
+      </ly-field>
+    </ly-grid>
+    <ly-grid item col="12 12@XSmall">
+      <button
+        ly-button
+        raised
+        bg="primary"
+        style="float: right; border-radius: 15px;"
+        class="full-width-button"
+        (click)="getHistoryOrder()"
+      >
+        Search
+      </button>
+    </ly-grid>
+  </ly-grid>
+  <div style="text-align: center" *ngIf="listHistoryOrder.length == 0">
+    <p style="color: rgb(151, 148, 148)">No data.</p>
+  </div>
+  <ly-accordion [withClass]="classes.expansion" [hasToggle]="false">
+    <ly-expansion-panel
+      *ngFor="let data of listHistoryOrder; index as x"
+      style="margin-top: 1em; border-radius: 15px; background-color: #213071; color: white;"
+      color="primary"
+      (opened)="getDetailOrder(data); data.panel_state = 1"
+      (closed)="data.panel_state = 0"
+    >
+      <ly-expansion-panel-header>
+        <ly-panel-title style="color: white;">{{
+          data.order_no
+        }}</ly-panel-title>
+        <button ly-button color="primary" appearance="icon">
+          <ly-expansion-icon
+            style="color: white;"
+            [up]="data.panel_state == 1"
+          ></ly-expansion-icon>
+        </button>
+      </ly-expansion-panel-header>
+      <div class="border-content" style="background-color: white">
+        <ly-grid container col="12"
+          ><ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>Project</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">
+              {{ data.project_name }}
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>Requester</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">
+              {{ data.created_by }}
+            </p>
+          </ly-grid>
+
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>Area</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">
+              {{ data.area_name }}
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>Order Num.</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">{{ data.order_no }}</p>
+          </ly-grid>
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>Zona</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">
+              {{ data.zone_name }}
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>No. Reservasi</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">{{ data.no_reservasi }}</p>
+          </ly-grid>
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>Description</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="9 7@XSmall">
+            <p style="color: black;">{{ data.description }}</p>
+          </ly-grid>
+          <ly-grid item col="12">
+            <p
+              style="color: black;background-color: rgb(204, 204, 204);text-align: center"
+            >
+              <strong>Material Detail</strong>
+            </p>
+          </ly-grid>
+          <!-- <div *ngFor="let data of panelStates; index as j"> -->
+          <ly-grid
+            item
+            container
+            col="12"
+            *ngFor="let data2 of listDetailOrder; index as j"
+          >
+            <ly-grid item container col="8">
+              <ly-grid item col="2">
+                <label style="color: black;">{{ j + 1 }}</label>
+              </ly-grid>
+              <ly-grid item col="10">
+                <label style="color: black;"
+                  >{{ data2.material_name }} - {{ data2.quantity }}
+                  {{ data2.base_unit_of_measure }}</label
+                >
+              </ly-grid>
+              <ly-grid item col="2">
+                <label style="color: black;">&nbsp;</label>
+              </ly-grid>
+              <!-- <ly-grid item col="10">
+                <label
+                  [class.text-red]="data.status == '1'"
+                  [class.text-green]="data.status == '2'"
+                  >{{ data.status == "1" ? "Reject" : "Approve" }} </label
+                ><br />
+                <label style="color: rgb(85, 85, 85);"
+                  >{{ data.approval_notes ? data.approval_notes : "-" }}
+                </label>
+              </ly-grid> -->
+            </ly-grid>
+            <ly-grid item col="4">
+              <ly-label
+                style="color: green;"
+                *ngIf="
+                  listHistoryOrder[x].order_status >= 3 &&
+                  listHistoryOrder[x].order_status <= 5 &&
+                  data2.stock == 2
+                "
+                >In Stock</ly-label
+              >
+              <ly-label
+                style="color: red;"
+                *ngIf="
+                  listHistoryOrder[x].order_status >= 3 &&
+                  listHistoryOrder[x].order_status <= 5 &&
+                  data2.stock == 1
+                "
+                >Empty Stock</ly-label
+              >
+              <ly-label
+                style="color: yellow;"
+                *ngIf="
+                  listHistoryOrder[x].order_status >= 3 &&
+                  listHistoryOrder[x].order_status <= 5 &&
+                  data2.stock == 3
+                "
+                >Partial {{ data2.quantity_shipping }}
+                {{ data2.base_unit_of_measure }}</ly-label
+              >
+              <ly-label
+                style="color: black; padding-left: 1em"
+                *ngIf="
+                  listHistoryOrder[x].order_status < 3 ||
+                  listHistoryOrder[x].order_status > 5
+                "
+                >-</ly-label
+              >
+            </ly-grid>
+          </ly-grid>
+          <!-- </div> -->
+          <ly-grid item col="11 12@XSmall">
+            <!-- <button
+              ly-button
+              raised
+              bg="primary"
+              style="float: left; background-color: #4caf50; margin-bottom: 10px;margin-right: 10px;"
+              class="full-width-button"
+              *ngIf="
+                listHistoryOrder[x].order_status == 4 &&
+                flagRecieveOrder == true
+              "
+              (click)="confirmRecieveOrder(listHistoryOrder[x].id)"
+            >
+              Recieve
+            </button>
+            <button
+              ly-button
+              raised
+              style="float: left; margin-bottom: 10px;margin-right: 10px;border: 1px solid #213071;"
+              class="full-width-button"
+              *ngIf="
+                listHistoryOrder[x].order_status == 4 &&
+                flagRecieveOrder == true
+              "
+              (click)="showPicDelivery(listDetailOrder[0].capture_delivery)"
+            >
+              <i class="fas fa-image"></i>
+            </button> -->
+            <button
+              ly-button
+              raised
+              bg="primary"
+              style="float: left;background-color: #f5dd42; margin-bottom: 10px;margin-right: 10px;"
+              class="full-width-button"
+              (click)="print(data, listDetailOrder)"
+            >
+              <i class="fas fa-print"></i>
+            </button>
+            <button
+              ly-button
+              raised
+              bg="primary"
+              style="float: left"
+              class="full-width-button"
+              (click)="trackOrder(listHistoryOrder[x].id)"
+            >
+              Track Order
+            </button>
+          </ly-grid>
+          <ly-grid item col="12" *ngIf="dataTrackingOrder">
+            <vertical-timeline>
+              <vertical-timeline-card
+                *ngFor="let data3 of dataTrackingOrder"
+                [dateValue]="data3.created_date"
+              >
+                <p style="color: black">{{ data3.process_desc }}</p>
+              </vertical-timeline-card>
+            </vertical-timeline>
+          </ly-grid>
+        </ly-grid>
+      </div>
+    </ly-expansion-panel>
+  </ly-accordion>
+</div>
+<ngx-confirm-box
+  bgColor="rgba(0,0,0,0.5)"
+  confirmHeading="Process"
+  confirmCanceltext="No"
+  confirmContent="Are your sure?"
+  confirmOkaytext="Yes"
+  (confirmEvt)="recieveOrder($event)"
+></ngx-confirm-box>

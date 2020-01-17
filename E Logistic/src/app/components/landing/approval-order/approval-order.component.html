@@ -1,0 +1,202 @@
+<ly-grid container spacing="16 8@XSmall"
+  ><ly-grid item col="12 12@XSmall">
+    <p class="menu-title">
+      Approval Order
+    </p>
+  </ly-grid>
+</ly-grid>
+<div style="text-align: center" *ngIf="listOrderApproval.length == 0">
+  <p style="color: rgb(151, 148, 148)">No data.</p>
+</div>
+<div class="container-comparison">
+  <ly-accordion [withClass]="classes.expansion" [hasToggle]="false">
+    <ly-expansion-panel
+      *ngFor="let data of listOrderApproval"
+      style="margin-top: 1em; border-radius: 15px; background-color: #213071; color: white;"
+      color="primary"
+      (opened)="getDetailOrder(data); data.panel_state = 1"
+      (closed)="data.panel_state = 0"
+    >
+      <ly-expansion-panel-header>
+        <ly-panel-title style="color: white;">{{
+          data.order_no
+        }}</ly-panel-title>
+        <button ly-button color="primary" appearance="icon">
+          <ly-expansion-icon
+            style="color: white;"
+            [up]="data.panel_state == 1"
+          ></ly-expansion-icon>
+        </button>
+      </ly-expansion-panel-header>
+      <div class="border-content" style="background-color: white">
+        <ly-grid container col="12"
+          ><ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>Project</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">
+              {{ data.project_name }}
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>Requester</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">
+              {{ data.created_by }}
+            </p>
+          </ly-grid>
+
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>Area</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">
+              {{ data.area_name }}
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>Order Num.</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">{{ data.order_no }}</p>
+          </ly-grid>
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>Zona</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">
+              {{ data.zone_name }}
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 5@XSmall">
+            <p style="color: black;">
+              <strong>No. Reservasi</strong>
+            </p>
+          </ly-grid>
+          <ly-grid item col="3 7@XSmall">
+            <p style="color: black;">{{ data.no_reservasi }}</p>
+          </ly-grid>
+          <ly-grid item col="12">
+            <p
+              style="color: black;background-color: rgb(204, 204, 204);text-align: center"
+            >
+              <strong>Material Detail</strong>
+            </p>
+          </ly-grid>
+          <!-- <div *ngFor="let data of panelStates; index as j"> -->
+          <ly-grid
+            item
+            container
+            col="12"
+            *ngFor="let data of listDetailOrder; index as j"
+          >
+            <ly-grid item container col="8">
+              <ly-grid item col="2">
+                <label style="color: black;">{{ j + 1 }}</label>
+              </ly-grid>
+              <ly-grid item col="10">
+                <label style="color: black;"
+                  >{{ data.material_name }} - {{ data.quantity }}
+                  {{ data.base_unit_of_measure }}</label
+                >
+              </ly-grid>
+              <ly-grid item col="2">
+                <label style="color: black;">&nbsp;</label>
+              </ly-grid>
+              <ly-grid item col="10">
+                <label style="color: rgb(85, 85, 85);"
+                  >{{ data.description }}
+                </label>
+                <label
+                  *ngIf="data.material_name == 'SOLAR'"
+                  style="color: rgb(85, 85, 85);"
+                  ><br />Last Hour Meter : {{ data.last_hour_meter }}</label
+                ><br />
+                <ly-field class="full-width">
+                  <input
+                    type="text"
+                    placeholder="Note"
+                    lyNativeControl
+                    style="color: black;"
+                    [(ngModel)]="data.approval_notes"
+                  />
+                </ly-field>
+              </ly-grid>
+            </ly-grid>
+            <ly-grid item col="4">
+              <ly-field class="full-width">
+                <ly-label>Approval</ly-label>
+                <ly-select
+                  name="approve{{ j }}"
+                  [(ngModel)]="data.status"
+                  [class.text-red]="data.status == '1'"
+                  [class.text-green]="data.status == '2'"
+                >
+                  <ly-option [value]="2" style="color: green;"
+                    >Approve</ly-option
+                  >
+                  <ly-option [value]="1" style="color:red">Reject</ly-option>
+                </ly-select>
+              </ly-field>
+            </ly-grid>
+          </ly-grid>
+          <!-- </div> -->
+          <!-- <ly-grid
+            item
+            col="12 12@XSmall"
+            style="border: 1px solid black; margin-bottom: 15px; border-radius: 15px;"
+          >
+            <h4 style="color: black;padding-left: 10px;">Sign here :</h4>
+            <div style="text-align: center;">
+              <button
+                (click)="signaturePad.clear()"
+                ly-button
+                style="left:0;right: 0;"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div style="text-align: center;">
+              <signature-pad
+                [options]="signaturePadOptions"
+                (onEndEvent)="drawComplete()"
+                style="color: red;"
+              ></signature-pad>
+            </div>
+          </ly-grid> -->
+          <ly-grid item col="11 12@XSmall"
+            ><button
+              ly-button
+              raised
+              bg="primary"
+              style="float: right"
+              class="full-width-button"
+              (click)="confirmSubmit()"
+            >
+              Process
+            </button>
+          </ly-grid>
+        </ly-grid>
+      </div>
+    </ly-expansion-panel>
+  </ly-accordion>
+</div>
+<ngx-confirm-box
+  bgColor="rgba(0,0,0,0.5)"
+  confirmHeading="SAVE"
+  confirmCanceltext="No"
+  confirmContent="Are your sure?"
+  confirmOkaytext="Yes"
+  (confirmEvt)="submitApproval($event)"
+></ngx-confirm-box>
